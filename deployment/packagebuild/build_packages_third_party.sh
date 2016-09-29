@@ -56,7 +56,6 @@ fi
 
 rpm -q rpmdevtools > /dev/null || yum install -y rpmdevtools
 rpm -q createrepo > /dev/null || yum install -y createrepo
-rpmdev-wipetree
 
 if [[ -n ${package} ]]; then
   build_package ${package} ${version}
@@ -64,7 +63,7 @@ else
   build_all_packages
 fi
 
-repo_dir=${REPO_BASE_DIR}/packages/rhel/6/third_party/$(date +%Y%m%d%H%M%S)
+repo_dir=${REPO_BASE_DIR}/packages/rhel/$(rpm -E '%{rhel}')/third_party/$(date +%Y%m%d%H%M%S)
 [ -d ${repo_dir} ] || mkdir -p ${repo_dir}
 # Copy all rpms from rpmbuild/RPMS/*.
 cp -a $(rpm -E '%{_rpmdir}')/* ${repo_dir}
